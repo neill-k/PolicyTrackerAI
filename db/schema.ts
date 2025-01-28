@@ -2,6 +2,10 @@ import { pgTable, text, serial, timestamp, integer, jsonb } from "drizzle-orm/pg
 import { relations } from "drizzle-orm";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
+export interface SourceMetadata {
+  description: string;
+}
+
 export const universities = pgTable("universities", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -13,7 +17,9 @@ export const universities = pgTable("universities", {
 
 export const policies = pgTable("policies", {
   id: serial("id").primaryKey(),
-  universityId: integer("university_id").references(() => universities.id).notNull(),
+  universityId: integer("university_id")
+    .references(() => universities.id)
+    .notNull(),
   category: text("category").notNull(), // e.g., "teaching", "research", "governance"
   title: text("title").notNull(),
   content: text("content").notNull(),
@@ -24,14 +30,16 @@ export const policies = pgTable("policies", {
 
 export const sources = pgTable("sources", {
   id: serial("id").primaryKey(),
-  universityId: integer("university_id").references(() => universities.id).notNull(),
+  universityId: integer("university_id")
+    .references(() => universities.id)
+    .notNull(),
   policyId: integer("policy_id").references(() => policies.id),
   url: text("url").notNull(),
   title: text("title").notNull(),
   type: text("type").notNull(), // e.g., "official_document", "news_article", "press_release"
   retrievalDate: timestamp("retrieval_date").defaultNow(),
   content: text("content"),
-  metadata: jsonb("metadata")
+  metadata: jsonb("metadata").$type<SourceMetadata>().notNull(),
 });
 
 // Relations

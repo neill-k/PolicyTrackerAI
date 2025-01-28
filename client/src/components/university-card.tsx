@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { type University } from "@db/schema";
+import type { University } from "@/types";
 import { Link } from "wouter";
 
 interface UniversityCardProps {

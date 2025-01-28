@@ -27,12 +27,7 @@ export function TrendChart({ data }: TrendChartProps) {
               <XAxis dataKey="year" />
               <YAxis />
               <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="count"
-                stroke="hsl(var(--primary))"
-                strokeWidth={2}
-              />
+              <Line type="monotone" dataKey="count" stroke="hsl(var(--primary))" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
         </div>

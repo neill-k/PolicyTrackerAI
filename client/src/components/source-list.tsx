@@ -1,5 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { type Source } from "@db/schema";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import type { Source } from "@/types";
 import { ExternalLink } from "lucide-react";
 import { format } from "date-fns";
 
@@ -25,7 +26,8 @@ export function SourceList({ sources }: SourceListProps) {
               </a>
             </CardTitle>
             <div className="text-sm text-muted-foreground">
-              Retrieved on {format(new Date(source.retrievalDate), "PP")}
+              Retrieved on{" "}
+              {source.retrievalDate ? format(new Date(source.retrievalDate), "PP") : "Unknown date"}
             </div>
           </CardHeader>
           <CardContent>

@@ -1,4 +1,4 @@
-import { type University, type Policy, type Source } from "@db/schema";
+import type { University, Policy, Source } from "@/types";
 import { queryClient } from "./queryClient";
 
 export const api = {
@@ -17,11 +17,24 @@ export const api = {
     },
     create: async (data: Omit<University, "id" | "lastUpdated">) => {
       const response = await fetch("/api/universities", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
       });
       if (!response.ok) throw new Error("Failed to create university");
+      return response.json();
+    },
+    research: async (data: { name: string; website: string }): Promise<{
+      university: University;
+      policies: Policy[];
+      sources: Source[];
+    }> => {
+      const response = await fetch("/api/universities/research", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error("Failed to research university");
       return response.json();
     }
   },

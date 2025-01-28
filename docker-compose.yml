@@ -1,0 +1,53 @@
+services:
+  app:
+    build:
+      context: .
+      target: production
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=postgres://policytracker:policytracker@db:5432/policytracker
+      - SESSION_SECRET=${SESSION_SECRET:-default_session_secret}
+      - ALLOWED_ORIGIN=${ALLOWED_ORIGIN:-http://localhost:3000}
+      - RATE_LIMIT_WINDOW=15
+      - RATE_LIMIT_MAX=100
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PORTKEY_API_KEY=${PORTKEY_API_KEY}
+      - PORTKEY_VIRTUAL_KEY=${PORTKEY_VIRTUAL_KEY}
+      - BRAVE_API_KEY=${BRAVE_API_KEY}
+      - VIRTUAL_KEY=${VIRTUAL_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=policytracker
+      - POSTGRES_PASSWORD=policytracker
+      - POSTGRES_DB=policytracker
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U policytracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

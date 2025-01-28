@@ -7,7 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { type Policy } from "@db/schema";
+import type { Policy } from "@/types";
 import { format } from "date-fns";
 
 interface PolicyTableProps {
@@ -44,7 +44,7 @@ export function PolicyTable({ policies }: PolicyTableProps) {
                 : "N/A"}
             </TableCell>
             <TableCell>
-              {format(new Date(policy.lastUpdated), "PP")}
+              {policy.lastUpdated ? format(new Date(policy.lastUpdated), "PP") : "N/A"}
             </TableCell>
           </TableRow>
         ))}

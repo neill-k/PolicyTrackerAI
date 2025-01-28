@@ -7,7 +7,12 @@ import University from "@/pages/university";
 import Compare from "@/pages/compare";
 import Analytics from "@/pages/analytics";
 import NotFound from "@/pages/not-found";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
 import { Link } from "wouter";
 
 function Navigation() {
